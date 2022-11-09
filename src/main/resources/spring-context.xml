@@ -1,0 +1,23 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="fetchPolicy" class="org.apache.activemq.ActiveMQPrefetchPolicy">
+        <property name="queuePrefetch" value="0"/>
+    </bean>
+    
+    <bean  id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61617"/>
+        <property name="prefetchPolicy" ref="fetchPolicy"/>
+    </bean>
+    
+    <bean id="queue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg index="0" value="DEV.QUEUE.1"/>
+    </bean>
+    
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <constructor-arg index="0" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="queue"/>
+    </bean>
+</beans>

@@ -1,0 +1,28 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    
+    <bean  id="connectionFactory" class="org.rwmckean.common.jms.QueueConnectionFactory">
+        <property name="hostName" value="localhost"/>
+        <property name="port" value="1414"/>
+        <property name="channel" value= "DEV.APP.SVRCONN"/>
+        <property name="queueManager" value="QM1"/>
+        <property name="appName" value="JmsPutGet (JMS)"/>
+        <property name="mQConnectionOptions" value="1"/>
+        <property name="username" value="app"/>
+        <property name="password" value="passw0rd"/>
+        <property name="connectionMode" value="1"/>
+        <property name="userAuthenticationMQCSP" value="true"/>
+    </bean>
+    
+    <bean id="queue" class="com.ibm.mq.jms.MQQueue">
+        <constructor-arg index="0" value="queue:///DEV.QUEUE.1"/>
+    </bean>
+    
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <constructor-arg index="0" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="queue"/>
+    </bean>
+</beans>
